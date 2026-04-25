@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Secure Viewer</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 50px auto;
+    }
+
+    #display {
+      font-size: 30px;
+      letter-spacing: 10px;
+      margin-bottom: 20px;
+    }
+
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    button {
+      padding: 20px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      background: #1e293b;
+      color: white;
+    }
+
+    #viewer {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container" id="lock">
+  <h2>Enter Code</h2>
+  <div id="display"></div>
+
+  <div class="keypad">
+    <button onclick="press(1)">1</button>
+    <button onclick="press(2)">2</button>
+    <button onclick="press(3)">3</button>
+    <button onclick="press(4)">4</button>
+    <button onclick="press(5)">5</button>
+    <button onclick="press(6)">6</button>
+    <button onclick="press(7)">7</button>
+    <button onclick="press(8)">8</button>
+    <button onclick="press(9)">9</button>
+    <button onclick="back()">⌫</button>
+    <button onclick="press(0)">0</button>
+    <button onclick="check()">OK</button>
+  </div>
+</div>
+
+<div id="viewer"></div>
+
+<script>
+  const correct = "1234";
+  let input = "";
+
+  function update() {
+    document.getElementById("display").innerText = "•".repeat(input.length);
+  }
+
+  function press(n) {
+    if (input.length < 6) {
+      input += n;
+      update();
+    }
+  }
+
+  function back() {
+    input = input.slice(0, -1);
+    update();
+  }
+
+  function check() {
+    if (input === correct) {
+      document.getElementById("lock").style.display = "none";
+      document.getElementById("viewer").style.display = "block";
+      loadImages();
+    } else {
+      alert("Wrong code");
+      input = "";
+      update();
+    }
+  }
+
+  function loadImages() {
+    const viewer = document.getElementById("viewer");
+
+    for (let i = 1; i <= 5; i++) { // test with 5 first
+      const img = document.createElement("img");
+      img.src = `images/page-${String(i).padStart(3, "0")}.jpg`;
+      img.style.width = "100%";
+      img.style.marginBottom = "10px";
+      viewer.appendChild(img);
+    }
+  }
+</script>
+
+</body>
+</html>
